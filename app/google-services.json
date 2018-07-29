@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "727351941140",
+    "firebase_url": "https://financasnobre-6ccca.firebaseio.com",
+    "project_id": "financasnobre-6ccca",
+    "storage_bucket": "financasnobre-6ccca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727351941140:android:4613d61cb93279aa",
+        "android_client_info": {
+          "package_name": "com.example.jamiltondamasceno.organizze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727351941140-djrbqg1fmvotukqujcsi7dduu4as18kt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jamiltondamasceno.organizze",
+            "certificate_hash": "372bc0dec9ab1ae7bb672b689641b6f1573bc532"
+          }
+        },
+        {
+          "client_id": "727351941140-io7uo22tjsvvrot8lkmhi5ld0a5qs81v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVlbucINIDTUKIz8V6jKHDkSppiKpwCzQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727351941140-io7uo22tjsvvrot8lkmhi5ld0a5qs81v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
