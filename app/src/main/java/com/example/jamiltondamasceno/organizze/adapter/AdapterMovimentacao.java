@@ -37,6 +37,7 @@ public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentaca
         holder.titulo.setText(movimentacao.getDescricao());
         holder.valor.setText(String.valueOf(movimentacao.getValor()));
         holder.categoria.setText(movimentacao.getCategoria());
+        holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccentReceita)); // define como padrão a cor verde, e caso seja despesa muda a cor
 
         if (movimentacao.getTipo().equals("d")) {
             holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccent));

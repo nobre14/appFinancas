@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.jamiltondamasceno.organizze.R;
 import com.example.jamiltondamasceno.organizze.config.ConfiguracaoFirebase;
+import com.example.jamiltondamasceno.organizze.fragment.DataDialogFragment;
 import com.example.jamiltondamasceno.organizze.helper.Base64Custom;
 import com.example.jamiltondamasceno.organizze.helper.DateCustom;
 import com.example.jamiltondamasceno.organizze.model.Movimentacao;
@@ -41,6 +42,15 @@ public class DespesasActivity extends AppCompatActivity {
 
         //preenche com a data atual
         campoData.setText(DateCustom.dataAtual());
+//        campoData.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                atualizaCampoData();
+//                if(campoData == null){
+//                    campoData.setText(DateCustom.dataAtual());
+//                }
+//            }
+//        });
         recuperarDespesaTotal();
     }
 
@@ -133,4 +143,11 @@ public class DespesasActivity extends AppCompatActivity {
 
         usuarioRef.child("despesaTotal").setValue(despesaAtualizada);
     }
+
+//    public void atualizaCampoData(){
+//        DataDialogFragment dialog = new DataDialogFragment();
+//        dialog.setCancelable(false);
+//        dialog.show(getSupportFragmentManager(), "tag");
+//        campoData.setText(dialog.retornaDataFormatada());
+//    }
 }

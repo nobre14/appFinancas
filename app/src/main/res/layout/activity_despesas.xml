@@ -51,7 +51,9 @@
             android:id="@+id/editData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ex: 19/09/2018" />
+            android:hint="Ex: 19/09/2018"
+            android:focusable="false"
+            android:enabled="true"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
