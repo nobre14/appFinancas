@@ -1,9 +1,13 @@
 package com.example.jamiltondamasceno.organizze.activity;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class DespesasActivity extends AppCompatActivity {
 
     private TextInputEditText campoData, campoCategoria, campoDescricao;
@@ -28,6 +34,7 @@ public class DespesasActivity extends AppCompatActivity {
     private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
     private Double despesaTotal; // já vem sendo acumulada
+    private DatePickerDialog.OnDateSetListener dateDialog;
 
 
     @Override
@@ -42,15 +49,31 @@ public class DespesasActivity extends AppCompatActivity {
 
         //preenche com a data atual
         campoData.setText(DateCustom.dataAtual());
-//        campoData.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                atualizaCampoData();
-//                if(campoData == null){
-//                    campoData.setText(DateCustom.dataAtual());
-//                }
-//            }
-//        });
+
+        campoData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> data = DateCustom.partesData(DateCustom.dataAtual());
+                DatePickerDialog dialog = new DatePickerDialog(DespesasActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        dateDialog,
+                        Integer.valueOf(data.get(2)),
+                        Integer.valueOf(data.get(1)),
+                        Integer.valueOf(data.get(0)));
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateDialog = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
+                mes = mes + 1;
+                String data = dia + "/" + mes + "/" + ano;
+                campoData.setText(data);
+            }
+        };
         recuperarDespesaTotal();
     }
 
@@ -144,10 +167,4 @@ public class DespesasActivity extends AppCompatActivity {
         usuarioRef.child("despesaTotal").setValue(despesaAtualizada);
     }
 
-//    public void atualizaCampoData(){
-//        DataDialogFragment dialog = new DataDialogFragment();
-//        dialog.setCancelable(false);
-//        dialog.show(getSupportFragmentManager(), "tag");
-//        campoData.setText(dialog.retornaDataFormatada());
-//    }
 }
