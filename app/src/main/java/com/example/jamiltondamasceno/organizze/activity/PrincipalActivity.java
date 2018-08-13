@@ -306,7 +306,9 @@ public class PrincipalActivity extends AppCompatActivity {
                         saldoMensal = saldoMensal - movimentacao.getValor();
                     }
                 }
-                textoSaldoMensal.setText("R$" + saldoMensal);
+                DecimalFormat decimalFormat = new DecimalFormat("0.##");
+                String resultadoFormatado = decimalFormat.format(saldoMensal);
+                textoSaldoMensal.setText("R$" + resultadoFormatado);
             }
 
             @Override

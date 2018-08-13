@@ -179,14 +179,4 @@ public class DespesasActivity extends AppCompatActivity {
 
     }
 
-//    public void atualizaDespesaMensal(Double valor, String data) {
-//        String mes = data.substring(3, 5);
-//        String ano = data.substring(6, 10);
-//        String mesAno = mes + ano;
-//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
-//        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
-//        DatabaseReference saldoMensalRef = firebaseRef.child("movimentacao").child(idUsuario).child(mesAno);
-//        saldoMensalRef.child("despesaMensal").setValue(valor);
-//    }
-
 }

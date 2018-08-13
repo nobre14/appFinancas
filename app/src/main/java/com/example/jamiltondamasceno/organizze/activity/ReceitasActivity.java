@@ -55,7 +55,7 @@ public class ReceitasActivity extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         dateDialog,
                         Integer.valueOf(data.get(2)),
-                        Integer.valueOf(data.get(1)),
+                        Integer.valueOf(data.get(1)) - 1,
                         Integer.valueOf(data.get(0)));
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -66,6 +66,7 @@ public class ReceitasActivity extends AppCompatActivity {
         dateDialog = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
+                mes = mes + 1;
                 String diaEditado;
                 if (dia < 10) {
                     diaEditado = "0" + dia;
@@ -175,13 +176,4 @@ public class ReceitasActivity extends AppCompatActivity {
         usuarioRef.child("receitaTotal").setValue(receitaAtualizada);
     }
 
-//    public void atualizaReceitaMensal(Double valor, String data) {
-//        String mes = data.substring(3, 5);
-//        String ano = data.substring(6, 10);
-//        String mesAno = mes + ano;
-//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
-//        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
-//        DatabaseReference saldoMensalRef = firebaseRef.child("movimentacao").child(idUsuario).child(mesAno);
-//        saldoMensalRef.child("receitaMensal").setValue(valor);
-//    }
 }
