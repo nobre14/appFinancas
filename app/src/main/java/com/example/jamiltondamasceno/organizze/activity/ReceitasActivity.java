@@ -66,8 +66,19 @@ public class ReceitasActivity extends AppCompatActivity {
         dateDialog = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
-                mes = mes + 1;
-                String data = dia + "/" + mes + "/" + ano;
+                String diaEditado;
+                if (dia < 10) {
+                    diaEditado = "0" + dia;
+                } else {
+                    diaEditado = String.valueOf(dia);
+                }
+                String mesEditado;
+                if (mes < 10) {
+                    mesEditado = "0" + mes;
+                } else {
+                    mesEditado = String.valueOf(mes);
+                }
+                String data = diaEditado + "/" + mesEditado + "/" + ano;
                 campoData.setText(data);
             }
         };
@@ -137,7 +148,7 @@ public class ReceitasActivity extends AppCompatActivity {
         }
     }
 
-    public void recuperarReceitaTotal(){
+    public void recuperarReceitaTotal() {
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
@@ -156,11 +167,21 @@ public class ReceitasActivity extends AppCompatActivity {
         });
     }
 
-    public void atualizarReceita(Double receitaAtualizada){
+    public void atualizarReceita(Double receitaAtualizada) {
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
 
         usuarioRef.child("receitaTotal").setValue(receitaAtualizada);
     }
+
+//    public void atualizaReceitaMensal(Double valor, String data) {
+//        String mes = data.substring(3, 5);
+//        String ano = data.substring(6, 10);
+//        String mesAno = mes + ano;
+//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+//        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+//        DatabaseReference saldoMensalRef = firebaseRef.child("movimentacao").child(idUsuario).child(mesAno);
+//        saldoMensalRef.child("receitaMensal").setValue(valor);
+//    }
 }

@@ -41,10 +41,11 @@ import java.util.List;
 public class PrincipalActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
-    private TextView textoSaldacao, textoSaldo;
+    private TextView textoSaldacao, textoSaldo, textoSaldoMensal;
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoUsuario = 0.0;
+    private Double saldoMensal = 0.0;
 
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
     private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -52,6 +53,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerUsuario;
     private ValueEventListener valueEventListenerMovimentacoes;
     private Movimentacao movimentacao;
+    private ValueEventListener valueEventListenerSaldoMensal;
 
     private RecyclerView recyclerView;
     private AdapterMovimentacao adapterMovimentacao;
@@ -71,6 +73,8 @@ public class PrincipalActivity extends AppCompatActivity {
         textoSaldo = findViewById(R.id.textSaldo);
         calendarView = findViewById(R.id.calendarView);
         recyclerView = findViewById(R.id.recyclerMovimentos);
+        textoSaldoMensal = findViewById(R.id.textSaldoMes);
+
         configuraCalendarioView();
         swipe();
 
@@ -142,18 +146,18 @@ public class PrincipalActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void atualizarSaldo(){
+    public void atualizarSaldo() {
 
         String emailUsuario = autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
         usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
 
-        if(movimentacao.getTipo().equals("r")){
+        if (movimentacao.getTipo().equals("r")) {
             receitaTotal = receitaTotal - movimentacao.getValor();
             usuarioRef.child("receitaTotal").setValue(receitaTotal);
         }
 
-        if(movimentacao.getTipo().equals("d")){
+        if (movimentacao.getTipo().equals("d")) {
             despesaTotal = despesaTotal - movimentacao.getValor();
             usuarioRef.child("despesaTotal").setValue(despesaTotal);
         }
@@ -251,9 +255,11 @@ public class PrincipalActivity extends AppCompatActivity {
                 //Log.i("Mes" , "mes" + mesAnoSelecionado);
                 movimentacoesRef.removeEventListener(valueEventListenerMovimentacoes);
                 recuperarMovimentacoes();
+                recuperaSaldoMensal();
             }
         });
     }
+
 
     public void adicionarReceita(View view) {
         startActivity(new Intent(this, ReceitasActivity.class));
@@ -268,6 +274,7 @@ public class PrincipalActivity extends AppCompatActivity {
         super.onStart();
         recuperarResumo();
         recuperarMovimentacoes();
+        recuperaSaldoMensal();
     }
 
     @Override
@@ -276,5 +283,37 @@ public class PrincipalActivity extends AppCompatActivity {
         Log.i("Evento:", "Evento removido");
         usuarioRef.removeEventListener(valueEventListenerUsuario);
         movimentacoesRef.removeEventListener(valueEventListenerMovimentacoes);
+        movimentacoesRef.removeEventListener(valueEventListenerSaldoMensal);
+    }
+
+    public void recuperaSaldoMensal() {
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+
+        movimentacoesRef = firebaseRef.child("movimentacao")
+                .child(idUsuario)
+                .child(mesAnoSelecionado);
+
+        valueEventListenerSaldoMensal = movimentacoesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                saldoMensal = 0.0;
+                for (DataSnapshot obj : dataSnapshot.getChildren()) {
+                    Movimentacao movimentacao = obj.getValue(Movimentacao.class);
+                    if (movimentacao.getTipo().equals("r")) {
+                        saldoMensal = saldoMensal + movimentacao.getValor();
+                    } else {
+                        saldoMensal = saldoMensal - movimentacao.getValor();
+                    }
+                }
+                textoSaldoMensal.setText("R$" + saldoMensal);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

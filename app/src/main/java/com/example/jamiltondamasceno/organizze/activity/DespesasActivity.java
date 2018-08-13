@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.jamiltondamasceno.organizze.R;
 import com.example.jamiltondamasceno.organizze.config.ConfiguracaoFirebase;
-import com.example.jamiltondamasceno.organizze.fragment.DataDialogFragment;
 import com.example.jamiltondamasceno.organizze.helper.Base64Custom;
 import com.example.jamiltondamasceno.organizze.helper.DateCustom;
 import com.example.jamiltondamasceno.organizze.model.Movimentacao;
@@ -36,7 +35,6 @@ public class DespesasActivity extends AppCompatActivity {
     private Double despesaTotal; // já vem sendo acumulada
     private DatePickerDialog.OnDateSetListener dateDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +56,7 @@ public class DespesasActivity extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         dateDialog,
                         Integer.valueOf(data.get(2)),
-                        Integer.valueOf(data.get(1)),
+                        Integer.valueOf(data.get(1)) - 1,
                         Integer.valueOf(data.get(0)));
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -70,8 +68,21 @@ public class DespesasActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
                 mes = mes + 1;
-                String data = dia + "/" + mes + "/" + ano;
+                String diaEditado;
+                if (dia < 10) {
+                    diaEditado = "0" + dia;
+                } else {
+                    diaEditado = String.valueOf(dia);
+                }
+                String mesEditado;
+                if (mes < 10) {
+                    mesEditado = "0" + mes;
+                } else {
+                    mesEditado = String.valueOf(mes);
+                }
+                String data = diaEditado + "/" + mesEditado + "/" + ano;
                 campoData.setText(data);
+
             }
         };
         recuperarDespesaTotal();
@@ -165,6 +176,17 @@ public class DespesasActivity extends AppCompatActivity {
         DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
 
         usuarioRef.child("despesaTotal").setValue(despesaAtualizada);
+
     }
+
+//    public void atualizaDespesaMensal(Double valor, String data) {
+//        String mes = data.substring(3, 5);
+//        String ano = data.substring(6, 10);
+//        String mesAno = mes + ano;
+//        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+//        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+//        DatabaseReference saldoMensalRef = firebaseRef.child("movimentacao").child(idUsuario).child(mesAno);
+//        saldoMensalRef.child("despesaMensal").setValue(valor);
+//    }
 
 }
